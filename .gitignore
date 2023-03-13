@@ -1,0 +1,9 @@
+.idea
+*.iml
+*.log
+*/logs/
+*/.m2/repository
+*/out/
+*/.project
+*/target/
+*.txt

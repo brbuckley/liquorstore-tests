@@ -1,0 +1,57 @@
+# Below are general configurations for all test types
+# Number of machines running the test type at the same time in distributed mode. 1 means no distributed testing
+distributed: 1
+# Minimum percentage of successful responses on a test
+success_rate: 99
+# Request timeout in millis
+timeout: 1000
+# Ramp-up and ramp-down time (in seconds) for endurance and spike test types
+ramp:
+  up: 300
+  down: 300
+# Configuration for the requests to the endpoint
+request:
+  # Body as JSON. MUST start and end with '
+  body: '{"id":1}'
+  # Expected status code
+  expected_status: 200
+  # Headers as JSON. MUST start and end with '
+  headers: '{"Content-Type":"application/json"}'
+  # Http method. Available methods: DELETE, GET, PATCH, POST, PUT
+  http_method: GET
+  # API url
+  url: http://127.0.0.1:8080
+# Maximum requests per second SUT can handle. Breakpoint ignores this param
+threshold:
+  value: 100
+  # Multiplies the threshold value. 0 means default value, and inputs need to be positive numbers.
+  # Default Values: Endurance: 0.8 | Spike: 2 | Stress: 1.2
+  # Examples: 1.2 means a 20% increase in the threshold, 0.8 means 80% of the threshold (20% decrease)
+  multiplier: 0
+# Below are test type specific configurations.
+breakpoint:
+  # Maximum duration (in seconds) for BreakPoint Tests. This test runs for at least 100 seconds, even when config is 0,
+  # so "duration" is the time in seconds exceeding 100.
+  duration: 3600
+  # Maximum allowed failed requests until the test "breaks"
+  tolerance: 50
+  # Exponential growth constants, these are advanced options to tweak the exponential growth function used by the test
+  # to calculate requests/users per second. This function f(t)=t+A^(t+B)
+  function:
+    # Represents the loss of precision during exponential growth, higher values produce faster tests but less accurate
+    # results. This represents A at our exponential function, and will be added as the fractional part,
+    # eg 0075 -> 1.0075
+    inaccuracy: 0075
+    # Value of requests per second at the first second of the test. Try to keep it close but a little lower than the
+    # expected threshold, this value must be higher or equal to 1
+    initial_load: 1
+spike:
+  # Duration of each spike in seconds (use even numbers as they will be divided by 2)
+  period: 300
+  # Number of spike repetitions during a test
+  repetition: 3
+  # Duration of waiting time after spike in seconds (usually the same value as spike duration)
+  wait_time: 300
+stress:
+  # Duration of stress test linear requests (after ramp up), in seconds (10 minutes will be added for ramp up/down)
+  duration: 1200

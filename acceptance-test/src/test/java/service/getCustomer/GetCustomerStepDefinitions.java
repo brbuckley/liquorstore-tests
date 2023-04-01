@@ -4,14 +4,14 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static net.serenitybdd.rest.SerenityRest.rest;
 import static net.serenitybdd.rest.SerenityRest.then;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.thucydides.core.util.EnvironmentVariables;
+import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.hamcrest.Matchers;
-import service.util.SetupUtil;
 
 public class GetCustomerStepDefinitions {
 
@@ -19,15 +19,10 @@ public class GetCustomerStepDefinitions {
   private String customerId;
   private static String token;
 
-  @Before
-  public void setup() {
-    // This setup does not behave very well at BeforeAll for some reason.
-    SetupUtil.setup();
-  }
-
   @BeforeAll
   public static void auth() {
-    token = SetupUtil.getToken();
+    EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
+    token = variables.getProperty("token");
   }
 
   @Given("I want to get a Customer")

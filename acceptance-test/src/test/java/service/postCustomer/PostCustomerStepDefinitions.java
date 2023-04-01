@@ -4,15 +4,15 @@ import static net.serenitybdd.rest.SerenityRest.rest;
 import static net.serenitybdd.rest.SerenityRest.then;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.thucydides.core.util.EnvironmentVariables;
+import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.hamcrest.Matchers;
 import service.model.Customer;
-import service.util.SetupUtil;
 
 public class PostCustomerStepDefinitions {
 
@@ -21,14 +21,10 @@ public class PostCustomerStepDefinitions {
   private String firstname;
   private static String token;
 
-  @Before
-  public void setup() {
-    SetupUtil.setup();
-  }
-
   @BeforeAll
   public static void auth() {
-    token = SetupUtil.getToken();
+    EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
+    token = variables.getProperty("token");
   }
 
   @Given("I want to create a new Customer")

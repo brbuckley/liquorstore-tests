@@ -5,34 +5,26 @@ import static net.serenitybdd.rest.SerenityRest.rest;
 import static net.serenitybdd.rest.SerenityRest.then;
 import static org.awaitility.Awaitility.await;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.io.File;
-import java.net.URL;
+import net.thucydides.core.util.EnvironmentVariables;
+import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.hamcrest.Matchers;
-import service.util.JacksonValidator;
-import service.util.RabbitClient;
-import service.util.SetupUtil;
 
 public class PostOrderStepDefinitions {
 
   private String api;
-  private String productId, customerId;
+  private String productId, customerId, orderId;
   private int quantity;
   private static String token;
 
-  @Before
-  public void setup() {
-    SetupUtil.setup();
-  }
-
   @BeforeAll
   public static void auth() {
-    token = SetupUtil.getToken();
+    EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
+    token = variables.getProperty("token");
   }
 
   @Given("I want to create a new Order")
@@ -54,25 +46,10 @@ public class PostOrderStepDefinitions {
     this.customerId = customerId;
   }
 
-  @Then("The system gives me an order with a new id, and send message to queue")
-  public void theSystemGivesMeAnOrderWithANewIdThatHasProductAndCustomer() {
-    then().body("id", Matchers.matchesRegex("ORD[0-9]{7}"));
-    RabbitClient rabbitClient = new RabbitClient();
-    // Tests are faster than rabbit, so I keep reading till the message arrives
-    await()
-        .timeout(60, SECONDS)
-        .until(
-            () -> {
-              String message = rabbitClient.getMessage();
-              if (message != null) {
-                JacksonValidator validator = new JacksonValidator();
-                URL url = getClass().getResource("/json/RabbitMessageSchema.json");
-                assert url != null;
-                File schema = new File(url.getPath());
-                return validator.validate(message, schema);
-              }
-              return false;
-            });
+  @Then("The system gives me an order with a new id and status {word}")
+  public void theSystemGivesMeAnOrderWithANewIdAndStatus(String status) {
+    orderId = then().body("id", Matchers.matchesRegex("ORD[0-9]{7}")).extract().path("id");
+    then().body("status", Matchers.equalTo(status));
   }
 
   @Then("The system shows: {string}")
@@ -123,5 +100,20 @@ public class PostOrderStepDefinitions {
                 + "  ]\n"
                 + "}")
         .post(api, customerId);
+  }
+
+  @And("After a short time, the order status changes to {word}")
+  public void afterAShortTimeTheOrderStatusChangesTo(String status) {
+    await()
+        .timeout(60, SECONDS)
+        .until(
+            () -> {
+              rest()
+                  .header("Content-Type", "application/json")
+                  .auth()
+                  .oauth2(token)
+                  .get("/" + customerId + "/orders/" + orderId);
+              return then().extract().path("status").equals(status);
+            });
   }
 }

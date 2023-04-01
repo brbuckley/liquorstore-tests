@@ -5,15 +5,8 @@ Feature: Create new Order at MS
     Given I want to create a new Order
     And The new Order should be 1 from product PRD0000001 for customer CST0000001
     When The order is received by the system
-    Then The system gives me an order with a new id, and send message to queue
-
-
-  Scenario: Request to create a new Order with unknown product
-    Given I want to create a new Order
-    And The new Order should be 2 from product PRD0000004 for customer CST0000001
-    When The order is received by the system
-    Then The system gives me an order with a new id, and send message to queue
-
+    Then The system gives me an order with a new id and status processing
+    And After a short time, the order status changes to ordered
 
   Scenario: Request to create a new Order for a product that does not exist
     Given I want to create a new Order

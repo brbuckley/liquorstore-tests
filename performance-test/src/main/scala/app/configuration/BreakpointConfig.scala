@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /** Get configs from yaml properties or CLI args
@@ -15,7 +15,7 @@ class BreakpointConfig(
   @JsonProperty("function") _function: FunctionConfig
 ) {
 
-  val duration: Integer        = optionalEnvYaml("breakpoint.duration", _duration)
-  val tolerance: Integer       = optionalEnvYaml("breakpoint.tolerance", _tolerance)
+  val duration: Integer        = find("breakpoint.duration", _duration)
+  val tolerance: Integer       = find("breakpoint.tolerance", _tolerance)
   val function: FunctionConfig = _function
 }

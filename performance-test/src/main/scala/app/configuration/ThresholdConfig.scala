@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 import java.util.Optional
@@ -15,7 +15,7 @@ class ThresholdConfig(
   @JsonProperty("value") _value: Integer
 ) {
 
-  val multiplier: Double = optionalEnvYaml("threshold.multiplier", _multiplier).toDouble
-  val value: Int         = optionalEnvYaml("threshold.value", _value)
+  val multiplier: Double = find("threshold.multiplier", _multiplier).toDouble
+  val value: Int         = find("threshold.value", _value)
 
 }

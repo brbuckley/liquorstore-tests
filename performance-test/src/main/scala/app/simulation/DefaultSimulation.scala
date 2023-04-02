@@ -1,22 +1,21 @@
 package app.simulation
 
-import app.configuration.DefaultConfig
+import app.configuration.ConfigurationLoader.configs
 import app.scenario.{CreateOrderScenario}
 import io.gatling.core.Predef.{Simulation, configuration, global}
 import io.gatling.core.structure.PopulationBuilder
 
 abstract class DefaultSimulation extends Simulation {
 
-  val default: DefaultConfig = new DefaultConfig()
-  val scenario               = new CreateOrderScenario(default.conf.timeout, default.conf.request)
+  val scenario               = new CreateOrderScenario(configs.timeout, configs.request)
 
   def defaultSetup(execution: PopulationBuilder): SetUp =
     setUp(
       execution
     ).protocols(scenario.httpProtocol)
       .assertions(
-        global.responseTime.max.lt(default.conf.timeout),
-        global.successfulRequests.percent.gte(default.conf.success_rate.toInt)
+        global.responseTime.max.lt(configs.timeout),
+        global.successfulRequests.percent.gte(configs.success_rate.toInt)
       )
 
 }

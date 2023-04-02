@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /** Get configs from yaml properties or CLI args
@@ -27,9 +27,9 @@ class Configs(
   @JsonProperty("stress") _stress: StressConfig
 ) {
 
-  val distributed: Integer         = optionalEnvYaml("distributed", _distributed)
-  val success_rate: Integer        = optionalEnvYaml("success_rate", _success_rate)
-  val timeout: Integer             = optionalEnvYaml("timeout", _timeout)
+  val distributed: Integer         = find("distributed", _distributed)
+  val success_rate: Integer        = find("success_rate", _success_rate)
+  val timeout: Integer             = find("timeout", _timeout)
   val ramp: RampConfig             = _ramp
   val request: RequestConfig       = _request
   val threshold: ThresholdConfig   = _threshold

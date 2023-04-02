@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /** Get configs from yaml properties or CLI args
@@ -10,6 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
   */
 class RampConfig(@JsonProperty("down") _down: Integer, @JsonProperty("up") _up: Integer) {
 
-  val down: Int = optionalEnvYaml("ramp.down", _down)
-  val up: Int   = optionalEnvYaml("ramp.up", _up)
+  val down: Int = find("ramp.down", _down)
+  val up: Int   = find("ramp.up", _up)
 }

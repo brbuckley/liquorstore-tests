@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /** Get configs from yaml properties or CLI args
@@ -15,7 +15,7 @@ class SpikeConfig(
   @JsonProperty("wait_time") _wait_time: Integer
 ) {
 
-  val period: Int         = optionalEnvYaml("spike.period", _period)
-  val repetition: Integer = optionalEnvYaml("spike.repetition", _repetition)
-  val wait_time: Integer  = optionalEnvYaml("spike.wait_time", _wait_time)
+  val period: Int         = find("spike.period", _period)
+  val repetition: Integer = find("spike.repetition", _repetition)
+  val wait_time: Integer  = find("spike.wait_time", _wait_time)
 }

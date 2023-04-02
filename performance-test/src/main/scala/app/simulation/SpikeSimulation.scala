@@ -1,5 +1,6 @@
 package app.simulation
 
+import app.configuration.ConfigurationLoader.configs
 import app.execution.SpikeExecution
 import io.gatling.core.structure.PopulationBuilder
 
@@ -8,9 +9,9 @@ class SpikeSimulation extends DefaultSimulation {
 
   val execution: PopulationBuilder = new SpikeExecution(
     scenario.scn,
-    default.conf.distributed,
-    default.conf.threshold,
-    default.conf.spike
+    configs.distributed,
+    configs.threshold,
+    configs.spike
   ).injectExecutions()
 
   defaultSetup(execution)

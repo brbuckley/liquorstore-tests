@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**  Get configs from yaml properties or CLI args
@@ -19,15 +19,15 @@ class RequestConfig(
   @JsonProperty("url") _url: String
 ) {
 
-  val body: String         = optionalEnvYaml("request.body", _body)
-  val expected_status: Int = optionalEnvYaml("request.expected_status", _expected_status)
-  val headers: Map[String, String] = optionalEnvYaml("request.headers", _headers)
+  val body: String         = find("request.body", _body)
+  val expected_status: Int = find("request.expected_status", _expected_status)
+  val headers: Map[String, String] = find("request.headers", _headers)
     .replaceAll("['\n\"{}\\\\]", "")
     .split(" *, *")
     .map(_.split(" *: *"))
     .map { case Array(k, v) => (k, v) }
     .toMap
   val http_method: String =
-    optionalEnvYaml("request.http_method", _http_method)
-  val url: String = optionalEnvYaml("request.url", _url)
+    find("request.http_method", _http_method)
+  val url: String = find("request.url", _url)
 }

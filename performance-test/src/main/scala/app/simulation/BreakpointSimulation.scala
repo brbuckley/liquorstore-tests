@@ -1,5 +1,6 @@
 package app.simulation
 
+import app.configuration.ConfigurationLoader.configs
 import app.execution.BreakpointExecution
 import io.gatling.core.structure.PopulationBuilder
 
@@ -10,8 +11,8 @@ class BreakpointSimulation extends DefaultSimulation {
 
   val execution: PopulationBuilder = new BreakpointExecution(
     scenario.scn,
-    default.conf.distributed,
-    default.conf.breakpoint
+    configs.distributed,
+    configs.breakpoint
   ).injectExecutions()
 
   defaultSetup(execution)

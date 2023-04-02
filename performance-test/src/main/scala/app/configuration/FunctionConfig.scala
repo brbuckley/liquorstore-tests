@@ -1,6 +1,6 @@
 package app.configuration
 
-import app.util.ConfigUtil.optionalEnvYaml
+import ConfigurationLoader.find
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /** Get configs from yaml properties or CLI args
@@ -13,6 +13,6 @@ class FunctionConfig(
   @JsonProperty("initial_load") _initial_load: String
 ) {
 
-  val inaccuracy: Double   = ("1." + optionalEnvYaml("breakpoint.function.inaccuracy", _inaccuracy)).toDouble
-  val initial_load: Double = optionalEnvYaml("breakpoint.function.initial_load", _initial_load).toDouble
+  val inaccuracy: Double   = ("1." + find("breakpoint.function.inaccuracy", _inaccuracy)).toDouble
+  val initial_load: Double = find("breakpoint.function.initial_load", _initial_load).toDouble
 }

@@ -5,13 +5,13 @@
     <artifactId>performance-test</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <dependency.gatling.version>3.9.0</dependency.gatling.version>
+        <dependency.gatling.version>3.9.2</dependency.gatling.version>
         <dependency.jackson.version>2.14.2</dependency.jackson.version>
         <dependency.lombok.version>1.18.24</dependency.lombok.version>
         <dependency.mapstruct.version>1.5.2.Final</dependency.mapstruct.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <plugin.gatling-maven-plugin.version>4.2.9</plugin.gatling-maven-plugin.version>
+        <plugin.gatling-maven-plugin.version>4.3.0</plugin.gatling-maven-plugin.version>
         <plugin.maven-compiler.version>3.10.1</plugin.maven-compiler.version>
         <plugin.maven-enforcer.version>3.2.1</plugin.maven-enforcer.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -1,7 +1,7 @@
 package app.simulation
 
 import app.configuration.ConfigurationLoader.configs
-import app.scenario.{CreateOrderScenario}
+import app.scenario.CreateOrderScenario
 import io.gatling.core.Predef.{Simulation, configuration, global}
 import io.gatling.core.structure.PopulationBuilder
 

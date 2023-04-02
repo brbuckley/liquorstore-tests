@@ -13,7 +13,7 @@ object ConfigurationLoader {
   val DEFAULT_DURATION = 100
   val mapper           = new ObjectMapper(new YAMLFactory())
   val reader           = new FileReader(getClass.getResource("/application.yaml").getPath)
-  val configs: Configs    = mapper.readValue(reader, classOf[Configs])
+  val configs: Configs = mapper.readValue(reader, classOf[Configs])
 
   // Check for Double infinity
   if (exponentialCalculation(

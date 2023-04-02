@@ -7,7 +7,7 @@ import io.gatling.core.structure.PopulationBuilder
 
 abstract class DefaultSimulation extends Simulation {
 
-  val scenario               = new CreateOrderScenario(configs.timeout, configs.request)
+  val scenario = new CreateOrderScenario(configs.timeout, configs.request)
 
   def defaultSetup(execution: PopulationBuilder): SetUp =
     setUp(

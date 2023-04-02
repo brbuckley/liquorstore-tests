@@ -16,17 +16,17 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.ArrayList;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.hamcrest.Matchers;
-
-import java.util.ArrayList;
 
 public class OrderStepDefinitions {
 
   private String api, customerId, orderId;
   Order order;
-  ObjectMapper objectMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+  ObjectMapper objectMapper =
+      new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
   private static String orderToken, purchaseToken;
 
   @BeforeAll
@@ -45,7 +45,7 @@ public class OrderStepDefinitions {
   @And("The new Order should be {int} from product {word} for customer {word}")
   public void theNewOrderShouldBeFromProductForCustomer(
       int quantity, String productId, String customerId) {
-    OrderLine orderLine = new OrderLine(quantity,new Product(productId));
+    OrderLine orderLine = new OrderLine(quantity, new Product(productId));
     order.getItems().add(orderLine);
     this.customerId = customerId;
   }
@@ -94,7 +94,7 @@ public class OrderStepDefinitions {
   }
 
   @And("{int} from product {word}")
-  public void fromProduct(int quantity, String  productId) {
+  public void fromProduct(int quantity, String productId) {
     OrderLine orderLine = new OrderLine(quantity, new Product(productId));
     order.getItems().add(orderLine);
   }
@@ -102,16 +102,16 @@ public class OrderStepDefinitions {
   @And("{int} new Purchase orders are created")
   public void newPurchaseOrdersAreCreated(int quantity) {
     await()
-            .timeout(60, SECONDS)
-            .until(
-                    () -> {
-                      rest()
-                              .header("Content-Type", "application/json")
-                              .auth()
-                              .oauth2(purchaseToken)
-                              .get("http://localhost:8082/?order-id={orderId}", orderId);
-                      return ((ArrayList<?>)then().extract().path("length")).size() == quantity;
-                    });
+        .timeout(60, SECONDS)
+        .until(
+            () -> {
+              rest()
+                  .header("Content-Type", "application/json")
+                  .auth()
+                  .oauth2(purchaseToken)
+                  .get("http://localhost:8082/?order-id={orderId}", orderId);
+              return ((ArrayList<?>) then().extract().path("length")).size() == quantity;
+            });
   }
 
   @And("I do not have an Authorization token for customer {word}")
@@ -122,9 +122,9 @@ public class OrderStepDefinitions {
   @When("The order is received by the system with no JWT")
   public void theOrderIsReceivedByTheSystemWithNoJWT() throws JsonProcessingException {
     rest()
-            .header("Content-Type", "application/json")
-            .body(objectMapper.writeValueAsString(order))
-            .post(api, customerId);
+        .header("Content-Type", "application/json")
+        .body(objectMapper.writeValueAsString(order))
+        .post(api, customerId);
   }
 
   @Then("The system blocks the request with status {int} {word}")

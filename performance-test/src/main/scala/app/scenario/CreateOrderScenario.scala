@@ -35,7 +35,7 @@ class CreateOrderScenario(timeout: Int, request: RequestConfig) {
 
   val scn: ScenarioBuilder =
     scenario("Customers ordering products")
-      // 20% are new customers
+    // 20% are new customers
       .randomSwitch(
         20.0 -> exec(
           http("Create a new customer")
@@ -46,7 +46,7 @@ class CreateOrderScenario(timeout: Int, request: RequestConfig) {
             .check(status.is(201))
             .check(responseTimeInMillis.lte(timeout))
         ).exitHereIfFailed,
-        80.0 -> exec( (session: Session) => session.set("customerId","CST0000001"))
+        80.0 -> exec((session: Session) => session.set("customerId", "CST0000001"))
       )
       // 25% check their profile before ordering
       .randomSwitch(
@@ -67,7 +67,8 @@ class CreateOrderScenario(timeout: Int, request: RequestConfig) {
           .check(jsonPath("$.id").exists.saveAs("orderId"))
           .check(status.is(201))
           .check(responseTimeInMillis.lte(timeout))
-      ).exitHereIfFailed
+      )
+      .exitHereIfFailed
       // 50% check the status of the order shortly after
       .randomSwitch(
         50.0 -> pause(10).exec(

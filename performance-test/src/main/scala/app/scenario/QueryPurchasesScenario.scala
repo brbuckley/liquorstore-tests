@@ -14,7 +14,7 @@ class QueryPurchasesScenario(timeout: Int, request: RequestConfig) {
 
   val scn: ScenarioBuilder =
     scenario("Customers ordering products")
-      // 90% searches by order id while 10% search by purchase id
+    // 90% searches by order id while 10% search by purchase id
       .randomSwitch(
         90.0 -> exec(
           http("Search by Order id")
@@ -22,10 +22,11 @@ class QueryPurchasesScenario(timeout: Int, request: RequestConfig) {
             .check(status.is(200))
             .check(responseTimeInMillis.lte(timeout))
         ),
-        10.0 -> exec( http("Search by Purchase id")
-          .get("/PUR0000001")
-          .check(status.is(200))
-          .check(responseTimeInMillis.lte(timeout))
+        10.0 -> exec(
+          http("Search by Purchase id")
+            .get("/PUR0000001")
+            .check(status.is(200))
+            .check(responseTimeInMillis.lte(timeout))
         )
       )
 

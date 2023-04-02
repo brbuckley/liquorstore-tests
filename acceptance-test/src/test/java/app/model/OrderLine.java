@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderLine {
 
-    private Integer quantity;
+  private Integer quantity;
 
-    private Product product;
+  private Product product;
 }

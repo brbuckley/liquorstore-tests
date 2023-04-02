@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Product {
 
-    private String id;
+  private String id;
 }

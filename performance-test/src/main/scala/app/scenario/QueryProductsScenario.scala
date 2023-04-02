@@ -17,7 +17,7 @@ class QueryProductsScenario(timeout: Int, request: RequestConfig) {
 
   val scn: ScenarioBuilder =
     scenario("Customers ordering products")
-      .exec( (session: Session) => session.set("supplierId","SUP000000" + (Random.nextInt(3) + 1).toString))
+      .exec((session: Session) => session.set("supplierId", "SUP000000" + (Random.nextInt(3) + 1).toString))
       // 30% creates a new product first
       .randomSwitch(
         30.0 -> exec(
@@ -29,7 +29,7 @@ class QueryProductsScenario(timeout: Int, request: RequestConfig) {
             .check(status.is(201))
             .check(responseTimeInMillis.lte(timeout))
         ).exitHereIfFailed,
-        70.0 -> exec( (session: Session) => session.set("productId","PRD0000001"))
+        70.0 -> exec((session: Session) => session.set("productId", "PRD0000001"))
       )
       // 40% check all products while 60% check only one product by its ID
       .randomSwitch(
